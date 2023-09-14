@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Adversarial Adjacency-Strategy-Game
 <kbd>
   <img src="https://github.com/ahnjedid/Adjacency-Strategy-Game/blob/master/screenshots/gamePlay.png">
@@ -82,3 +83,6 @@ You can make the Bot start first.
 
 
 
+=======
+# Tucil-1_AI
+>>>>>>> e47f931667f6d3f2ee36f7b9987070327ad992be
