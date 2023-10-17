@@ -1,6 +1,8 @@
+import javafx.scene.control.Button;
 
 public class Bot {
-    public int[] move(){
-        return new int[]{(int) (Math.random()%8), (int) (Math.random()%8)};
+    public int[] move(Button[][] map){
+        BotController decissionMaker = new LocalSearch(map);
+        return decissionMaker.run();
     }
 }
