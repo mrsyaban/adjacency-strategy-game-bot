@@ -1,11 +1,6 @@
-import javafx.scene.control.Button;
 
 public class Bot {
-    private int[] move;
-    public int[] getMove() {
-        return this.move;
-    }
-    public void setMove(int[] move){
-        this.move = move;
+    public int[] move(){
+        return new int[]{(int) (Math.random()%8), (int) (Math.random()%8)};
     }
 }

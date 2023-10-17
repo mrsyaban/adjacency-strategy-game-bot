@@ -4,28 +4,12 @@ import javafx.scene.control.Button;
 /**
  * Classes to run a bot according to the MinMax Alpha Beta Pruning, Local Search, and Genetic algorithms
  */
-public class BotController {
-    private Button[][] currentState;
-    private Bot bot;
-    private static final int ROW = 8;
-    private static final int COL = 8;
+abstract class BotController {
+    protected Button[][] currentState;
+    protected static final int ROW = 8;
+    protected static final int COL = 8;
 
-    public BotController(Button[][] map,Bot bot) {
-        this.currentState = map;
-        this.bot = bot;
-    }
-
-    public int[] MinMax(){
-        return new int[]{(int) (Math.random()%8), (int) (Math.random()%8)};
-    }
-
-    public  int[] LocalSearch(){
-        return new int[]{(int) (Math.random()%8), (int) (Math.random()%8)};
-    }
-
-    public  int[] Genetic(){
-        return new int[]{(int) (Math.random()%8), (int) (Math.random()%8)};
-    }
+    public abstract int[] run();
 
     /**
      *
@@ -33,10 +17,10 @@ public class BotController {
      * S1 - S2 - 2 x C2 + 1, for maximizer turn
      * S1 - S2 + 2 x C2 + 1, for minimizer turn
      * S1 - S2, base ( terminal state )
-     * where s1 represents the number of symbols for player 1,
-     * s2 represents the number of symbols for player 2,
-     * c1 represents the maximum number of boxes that can be changed by the maximizer,
-     * and c2 represents the maximum number of boxes that can be changed by the minimizer
+     * where S1 represents the number of symbols for player 1,
+     * S2 represents the number of symbols for player 2,
+     * C1 represents the maximum number of boxes that can be changed by the maximizer,
+     * and C2 represents the maximum number of boxes that can be changed by the minimizer
      *
      * @param state ,current state of board games
      * @param turn ,-1 : minimizer, 1 : maximizer, 0 : base
@@ -54,21 +38,48 @@ public class BotController {
      * @param map ,current map of game
      * @param player ,player: true, bot: false
      * @return sum of symbol player or bot
+     *
      */
     protected int countSymbol(Button[][] map,Boolean player){
         int symbol = 0;
-        if(player){
-            for (int i = 0; i < ROW; i++){
-                for (int j = 0; j < COL; j++) {
-                    if (map[i][j].getText().equals("")){
-
+        for (int i = 0; i < ROW; i++){
+            for (int j = 0; j < COL; j++) {
+                if(player){
+                    if(map[i][j].getText().equals("X")){
+                        symbol++;
+                    }
+                }else{
+                    if(map[i][j].getText().equals("O")){
+                        symbol++;
                     }
                 }
             }
-            return symbol;
-        }else{
-
-            return symbol;
         }
+        return symbol;
     }
+
+    /**
+     *
+     * return the maximum number of boxes that can be changed by player or bot
+     *
+     * @param map ,current map of game
+     * @param player ,player: true, bot: false
+     * @return maximum number of boxes that can be changed
+     *
+     */
+    protected int calculateMaxChangeableBoxes(Button[][] map,Boolean player){
+        return 0;
+    }
+
+    /**
+     *
+     * check if selected coordinate in map is valid and update that map
+     *
+     * @param coor ,coordinate of selected button on map
+     *
+     */
+    protected void updateMap(int[] coor){
+
+    }
+
 }
