@@ -1,10 +1,7 @@
 import javafx.scene.control.Button;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * Class to run a bot according to the MinMax Alpha Beta Pruning algorithm
@@ -37,9 +34,6 @@ public class MinMax extends BotController{
             try {
                 //
                 if (this.roundsLeft == depth) {
-                    System.out.println("halo");
-                    System.out.println(ObjectiveFunction(0,map));
-                    System.out.println(alpha);
                     return ObjectiveFunction(0, map);
                 } else if (depth%2 == 1){
                     // Minimum]
@@ -106,19 +100,21 @@ public class MinMax extends BotController{
     @Override
     public int[] run() {
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<?> future = executor.submit(() -> {
             double superMaxValue = Double.NEGATIVE_INFINITY;
             superMaxValue = miniMaxAB(0, this.currentState, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-        }, executorService);
+        });
 
         try {
-            future.get(5, TimeUnit.SECONDS); // Wait for up to 5 seconds
-        } catch (Exception e) {
-            // Handle timeout or exceptions
-            future.cancel(true); // Cancel the task if it takes too long
+            future.get(5, TimeUnit.SECONDS);
+        } catch (InterruptedException | TimeoutException e) {
+            System.out.println("Your Bot is too slow");
+            future.cancel(true);
+        } catch ( ExecutionException e) {
+            System.out.println(e.getMessage());
         }
-        executorService.shutdown();
+        executor.shutdown();
 
         this.roundsLeft -= 1;
         return this.selected;
