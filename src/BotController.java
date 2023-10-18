@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
  * Classes to run a bot according to the MinMax Alpha Beta Pruning, Local Search, and Genetic algorithms
  */
 abstract class BotController {
-    protected Button[][] currentState;
     protected static final int ROW = 8;
     protected static final int COL = 8;
 
@@ -26,16 +25,17 @@ abstract class BotController {
      *
      * @param state ,current state of board games
      * @param turn ,-1 : minimizer, 1 : maximizer, 0 : base
+     * @param map ,map on that current state
      * @return value of current stateAMO
      *
      */
-    protected int ObjectiveFunction(Button[][] state,int turn) throws Exception{
+    protected int ObjectiveFunction(Button[][] state,int turn,Button[][] map) throws Exception{
         if(turn == 1){
-            return this.countSymbol(false)-this.countSymbol(true)-(2*calculateMaxChangeableBoxes(true))+1;
+            return this.countSymbol(false,map)-this.countSymbol(true,map)-(2*calculateMaxChangeableBoxes(map,true))+1;
         }else if(turn == -1){
-            return this.countSymbol(false)-this.countSymbol(true)-(2*calculateMaxChangeableBoxes(false))+1;
+            return this.countSymbol(false,map)-this.countSymbol(true,map)-(2*calculateMaxChangeableBoxes(map,false))+1;
         }else if(turn == 0) {
-            return this.countSymbol(false)-this.countSymbol(true);
+            return this.countSymbol(false,map)-this.countSymbol(true,map);
         }else{
             throw new Exception("Invalid Input");
         }
@@ -49,16 +49,16 @@ abstract class BotController {
      * @return sum of symbol player or bot
      *
      */
-    protected int countSymbol(Boolean player){
+    protected int countSymbol(Boolean player,Button[][] map){
         int symbol = 0;
         for (int i = 0; i < ROW; i++){
             for (int j = 0; j < COL; j++) {
                 if(player){
-                    if(this.currentState[i][j].getText().equals("X")){
+                    if(map[i][j].getText().equals("X")){
                         symbol++;
                     }
                 }else{
-                    if(this.currentState[i][j].getText().equals("O")){
+                    if(map[i][j].getText().equals("O")){
                         symbol++;
                     }
                 }
@@ -71,16 +71,17 @@ abstract class BotController {
      *
      * return the maximum number of boxes that can be changed by player or bot
      *
+     * @param map, map on that state
      * @param player ,player: true, bot: false
      * @return maximum number of boxes that can be changed
      *
      */
-    protected int calculateMaxChangeableBoxes(Boolean player){
+    protected int calculateMaxChangeableBoxes(Button[][] map,Boolean player){
         int MaxChangeable = 0;
-        int currentSymbol = countSymbol(player);
+        int currentSymbol = countSymbol(player,map);
         for (int i = 0; i < ROW; i++){
             for (int j = 0; j < COL; j++) {
-                if (this.currentState[i][j].getText().equals("")){
+                if (map[i][j].getText().equals("")){
                     int adj = 0;
                     int startRow, endRow, startColumn, endColumn;
 
@@ -107,11 +108,11 @@ abstract class BotController {
 
                     // Search for adjacency for X's and O's or vice versa, and replace them.
                     for (int x = startRow; x <= endRow; x++) {
-                        adj = this.setAdjacency(x, j,adj,player);
+                        adj = this.setAdjacency(x, j,adj,player,map);
                     }
 
                     for (int y = startColumn; y <= endColumn; y++) {
-                        adj = this.setAdjacency(i, y,adj,player);
+                        adj = this.setAdjacency(i, y,adj,player,map);
                     }
 
                     if(MaxChangeable < adj){
@@ -128,19 +129,19 @@ abstract class BotController {
      *
      * check if selected coordinate in map is valid and update map or value
      *
-     * @param i
+     * @param i ,coordinate of y-axis on selected button on map
      * @param j ,coordinate of x-axis on selected button on map
      * @param player ,player: true, bot: false
      *
      */
-    protected void updateState(int i, int j,Boolean player){
+    protected void updateState(int i, int j,Boolean player,Button[][] map){
 
-        if (this.currentState[i][j].getText().equals("")){      // if selected value is still empty
+        if (map[i][j].getText().equals("")){      // if selected value is still empty
 
             if(player){     // if player update with X
-                this.currentState[i][j].setText("X");
+                map[i][j].setText("X");
             }else{      // Otherwise, it is bot update with O
-                this.currentState[i][j].setText("O");
+                map[i][j].setText("O");
             }
 
             // Value of indices to control the lower/upper bound of rows and columns
@@ -172,11 +173,11 @@ abstract class BotController {
 
             // Search for adjacency for X's and O's or vice versa, and replace them.
             for (int x = startRow; x <= endRow; x++) {
-                this.setAdjacency(x, j,player);
+                this.setAdjacency(x, j,player,map);
             }
 
             for (int y = startColumn; y <= endColumn; y++) {
-                this.setAdjacency(i, y,player);
+                this.setAdjacency(i, y,player,map);
             }
         }
 
@@ -191,22 +192,22 @@ abstract class BotController {
      * @param j ,coordinate of y-axis on selected button on map
      * @param player ,player: true and bot: false
      */
-    private void setAdjacency(int i, int j,Boolean player){
+    private void setAdjacency(int i, int j,Boolean player,Button[][] map){
         if (player) {
-            if (this.currentState[i][j].getText().equals("O")) {
-                this.currentState[i][j].setText("X");
+            if (map[i][j].getText().equals("O")) {
+                map[i][j].setText("X");
             }
-        } else if (this.currentState[i][j].getText().equals("X")) {
-            this.currentState[i][j].setText("O");
+        } else if (map[i][j].getText().equals("X")) {
+            map[i][j].setText("O");
         }
     }
 
-    private int setAdjacency(int i, int j,int currentSymbol,Boolean player){
+    private int setAdjacency(int i, int j,int currentSymbol,Boolean player,Button[][] map){
         if (player) {
-            if (this.currentState[i][j].getText().equals("O")) {
+            if (map[i][j].getText().equals("O")) {
                 return currentSymbol+1;
             }
-        } else if (this.currentState[i][j].getText().equals("X")) {
+        } else if (map[i][j].getText().equals("X")) {
             return currentSymbol+1;
         }
         return -1;
