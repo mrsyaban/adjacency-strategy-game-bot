@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Adversarial Adjacency-Strategy-Game
 <kbd>
   <img src="https://github.com/ahnjedid/Adjacency-Strategy-Game/blob/master/screenshots/gamePlay.png">
