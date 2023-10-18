@@ -4,7 +4,7 @@ import javafx.scene.control.Button;
  * Class to run a bot according to the MinMax Alpha Beta Pruning algorithm
  */
 public class MinMax extends BotController{
-    private final int defaultMaxDepth = 5; // default maximum depth of child generating
+    private final int defaultMaxDepth = 4; // default maximum depth of child generating
     private int MaxDepth; // leaf's depth
     private int[] selected = new int[2]; // [x,y]
 

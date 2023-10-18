@@ -209,6 +209,7 @@ public class OutputFrameController {
 
                 // Bot 1 turn
                 this.moveBot();
+
             }
             else {
                 this.playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
