@@ -1,8 +1,8 @@
 import javafx.scene.control.Button;
 
 public class Bot {
-    public int[] move(Button[][] map){
-        BotController decissionMaker = new LocalSearch(map);
+    public int[] move(Button[][] map, boolean playerXTurn, int roundsLeft){
+        BotController decissionMaker = new LocalSearch(map, playerXTurn, roundsLeft);
         return decissionMaker.run();
     }
 }

@@ -12,7 +12,7 @@ public class MinMax extends BotController{
         // leaf node
         if(depth == MaxDepth){
             try {
-                return ObjectiveFunction(map, -1);
+                return ObjectiveFunction(-1, map);
             } catch (Exception e){
                 return 0.0;
             }
