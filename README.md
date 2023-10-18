@@ -17,7 +17,7 @@ The initial game starts with 4 X’s in the bottom left corner and 4 O’s in th
 To get started, please install the latest version of the Java Development Kit (JDK) and please install a Java IDE such as <a href="https://www.jetbrains.com/idea/">IntelliJ</a>. Please note that the deployment instructions below use IntelliJ as the IDE.
 
 <hr>
-
+[README.md](README.md)
 ### Deployment (IntelliJ)
 1. Clone the repository through Git by running the following command:<br>
 `git clone https://github.com/GAIB20/adversarial-adjacency-strategy-game.git`, or simply download the repository.
@@ -57,11 +57,13 @@ java -cp ./src --module-path "./javafx-sdk-linux/lib" --add-modules=javafx.contr
 <hr>
 
 ### Program Instructions
-1. Run the Main class to load the program, and the input window below will pop up. Input the names of Player (X) and Bot (O) into their respective text fields.
-Then, select the number of rounds (a number between 2 and 28) to play using the dropdown menu.
-You can make the Bot start first.
+1. Run the Main class to load the program, and the input window below will pop up. There is two option available that is Player vs Bot and Bot vs Bot. Input the names of Player (X) and/or Bot (O/X) into their respective text fields.
+Then, select the algorithm for the bot(s). Then, the number![botVsbot.png](screenshots%2FbotVsbot.png) of rounds (a number between 2 and 28) to play using the dropdown menu.
+You can make the second player start first.
 <br><br><kbd>
-<img src="https://github.com/ahnjedid/Adjacency-Strategy-Game/blob/master/screenshots/inputScreen.png"></kbd>
+<img src="https://github.com/ahnjedid/Adjacency-Strategy-Game/blob/master/screenshots/inputScreen.png">
+<img src="https://github.com/ahnjedid/Adjacency-Strategy-Game/blob/master/screenshots/botVsbot.png">
+</kbd>
 <br><br>
 2. Click Play, and the gameboard and scoreboard window will load. Player (X) starts the game by clicking on an empty button. Any adjacent O’s will change to X's as a result. 
 3. Then, Bot (O) has their turn by also clicking on an empty button. Any adjacent X’s will change to O's as a result. NOTE: This process is counted as 1 round (Player and Bot both taking their turns).
@@ -79,10 +81,22 @@ You can make the Bot start first.
 </ul>
 
 
+<!-- CONTACT -->
+### Contact Author
 
+| Nama                   | NIM      | Email                       |
+|------------------------|----------|-----------------------------|
+| Fajar Maulana Herawan  | 13521080 | 13521080@std.stei.itb.ac.id |
+| Bagas Aryo Seto        | 13521081 | 13521081@std.stei.itb.ac.id |
+| Shidqi Indy Izhari     | 13521097 | 13521097@std.stei.itb.ac.id |
+| Muhammad Rizky Sya'ban | 13521119 | 13521119@std.stei.itb.ac.id |
 
+Project Link: [https://github.com/mrsyaban/Tubes-1-AI_AI-AI-AI](https://github.com/mrsyaban/Tubes-1-AI_AI-AI-AI)
 
-
-=======
-# Tucil-1_AI
->>>>>>> e47f931667f6d3f2ee36f7b9987070327ad992be
+<br/>
+<h4 align="center">
+  Created by AI-AI-AI
+<br/>
+  October 2023
+</h4>
+<hr>

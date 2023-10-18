@@ -53,7 +53,7 @@
             </Label>
             <ComboBox fx:id="numberOfRounds" GridPane.rowIndex="5" GridPane.columnIndex="1" maxWidth="Infinity" />
 
-            <Label text="Bot goes first: " GridPane.rowIndex="6" GridPane.columnIndex="0">
+            <Label text="Bot(O) goes first: " GridPane.rowIndex="6" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
