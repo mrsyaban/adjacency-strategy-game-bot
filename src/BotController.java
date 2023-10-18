@@ -26,7 +26,7 @@ abstract class BotController {
      *
      * @param state ,current state of board games
      * @param turn ,-1 : minimizer, 1 : maximizer, 0 : base
-     * @return value of current state
+     * @return value of current stateAMO
      *
      */
     protected int ObjectiveFunction(Button[][] state,int turn) throws Exception{
@@ -107,11 +107,11 @@ abstract class BotController {
 
                     // Search for adjacency for X's and O's or vice versa, and replace them.
                     for (int x = startRow; x <= endRow; x++) {
-                        this.setAdjacency(x, j,adj,player);
+                        adj = this.setAdjacency(x, j,adj,player);
                     }
 
                     for (int y = startColumn; y <= endColumn; y++) {
-                        this.setAdjacency(i, y,adj,player);
+                        adj = this.setAdjacency(i, y,adj,player);
                     }
 
                     if(MaxChangeable < adj){
@@ -201,13 +201,13 @@ abstract class BotController {
         }
     }
 
-    private void setAdjacency(int i, int j,int currentSymbol,Boolean player){
+    private int setAdjacency(int i, int j,int currentSymbol,Boolean player){
         if (player) {
             if (this.currentState[i][j].getText().equals("O")) {
-                currentSymbol++;
+                return currentSymbol+1;
             }
         } else if (this.currentState[i][j].getText().equals("X")) {
-            currentSymbol++;
+            return currentSymbol+1;
         }
     }
 
