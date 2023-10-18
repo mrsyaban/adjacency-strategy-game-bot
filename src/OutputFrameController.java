@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -50,7 +51,10 @@ public class OutputFrameController {
     private int playerOScore;
     private int roundsLeft;
     private boolean isBotFirst;
-    private Bot bot;
+
+    private boolean isModeBot;
+    private Bot bot1;
+    private Bot bot2;
 
 
     private static final int ROW = 8;
@@ -69,17 +73,24 @@ public class OutputFrameController {
      * @param isBotFirst True if bot is first, false otherwise.
      *
      */
-    void getInput(String name1, String name2, String rounds, boolean isBotFirst){
+    void getInput(String name1, String name2, String rounds, boolean isBotFirst,String gameMode ,String bot1algo, String bot2algo){
         this.playerXName.setText(name1);
         this.playerOName.setText(name2);
         this.roundsLeftLabel.setText(rounds);
         this.roundsLeft = Integer.parseInt(rounds);
         this.isBotFirst = isBotFirst;
-
+        this.isModeBot = gameMode.equals("bot vs bot");
         // Start bot
-        this.bot = new Bot();
+        this.bot2 = new Bot(bot2algo,this.buttons,this.playerXTurn,this.roundsLeft);
         this.playerXTurn = !isBotFirst;
+        if(isModeBot){
+            this.bot1 = new Bot(bot1algo,this.buttons,!this.playerXTurn,this.roundsLeft);
+            this.bot1.setSymbol("X");
+
+        }
         if (this.isBotFirst) {
+            this.moveBot();
+        }else if(gameMode.equals("bot vs bot")){
             this.moveBot();
         }
     }
@@ -196,8 +207,9 @@ public class OutputFrameController {
                     this.endOfGame();
                 }
 
-                // Bot's turn
+                // Bot 1 turn
                 this.moveBot();
+
             }
             else {
                 this.playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
@@ -215,6 +227,13 @@ public class OutputFrameController {
 
                 if (!isBotFirst && this.roundsLeft == 0) { // Game has terminated.
                     this.endOfGame();       // Determine & announce the winner.
+                }
+
+                if(isModeBot && !(!isBotFirst && this.roundsLeft == 0)){
+                    Platform.runLater(() -> {
+                        this.moveBot();
+                    });
+
                 }
             }
         }
@@ -353,7 +372,12 @@ public class OutputFrameController {
     }
 
     private void moveBot() {
-        int[] botMove = this.bot.move(this.buttons, this.playerXTurn, this.roundsLeft);
+        int[] botMove;
+        if(this.playerXTurn){
+            botMove = this.bot1.move();
+        }else{
+            botMove = this.bot2.move();
+        }
         int i = botMove[0];
         int j = botMove[1];
 
@@ -364,5 +388,6 @@ public class OutputFrameController {
         }
 
         this.selectedCoordinates(i, j);
+
     }
 }

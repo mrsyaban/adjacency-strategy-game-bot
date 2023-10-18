@@ -8,7 +8,6 @@ public class LocalSearch extends BotController{
         this.currentState = map;
         this.playerXTurn = playerXTurn;
         this.roundsLeft = roundsLeft;
-
     }
 
     private int[] hillClimb() {
@@ -23,7 +22,7 @@ public class LocalSearch extends BotController{
                     Button[][] child = getUpdatedState(state, i, j, false);
 //                    System.out.println(Arrays.deepToString(child));
                     try {
-                        int score = ObjectiveFunction(this.roundsLeft == 1 ? 0 : -1, child);
+                        int score = ObjectiveFunction(this.roundsLeft == 1 ? 0 : 1, child);
 //                        System.out.println(score);
                         if (score > maxScore) {
                             maxScore = score;
