@@ -1,8 +1,9 @@
 import javafx.scene.control.Button;
 
 public class Bot {
+    BotController decisionMaker;
     public int[] move(Button[][] map, boolean playerXTurn, int roundsLeft){
-        BotController decissionMaker = new MinMax(map);
-        return decissionMaker.run();
+        this.decisionMaker = new MinMax(map);
+        return this.decisionMaker.run();
     }
 }
