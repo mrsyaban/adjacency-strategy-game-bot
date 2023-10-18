@@ -1,4 +1,8 @@
 import javafx.scene.control.Button;
+
+/**
+ * Class to run a bot according to the Local Search algorithm with hill climb
+ */
 public class LocalSearch extends BotController{
     public LocalSearch(Button[][] map, boolean playerXTurn, int roundsLeft) {
         this.currentState = map;

@@ -1,13 +1,37 @@
 import javafx.scene.control.Button;
 
+/**
+ * Class to run a bot according to the MinMax Alpha Beta Pruning algorithm
+ */
 public class MinMax extends BotController{
     private int MaxDepth = 5;
     private int[] selected = new int[2]; //[x,y]
 
+    public MinMax(Button[][] map){
+        this.currentState = map;
+    }
+
+    /**
+     *
+     *
+     * @param inputMap
+     * @param x
+     * @param y
+     * @param symbol
+     * @return
+     */
     private Button[][] getUpdatedMap(Button[][] inputMap, int x, int y, String symbol) {
         return inputMap;
     }
 
+    /**
+     *
+     * @param depth
+     * @param map
+     * @param alpha
+     * @param beta
+     * @return
+     */
     private double miniMaxAB(int depth, Button[][] map, double alpha, double beta){
         // leaf node
         if(depth == MaxDepth){
