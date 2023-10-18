@@ -1,14 +1,13 @@
-import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 
 /**
- * Classes to run a bot according to the MinMax Alpha Beta Pruning, Local Search, and Genetic algorithms
+ * Parent Classes to run a bot according to the MinMax Alpha Beta Pruning, Local Search, and Genetic algorithms
  */
 abstract class BotController {
     protected static final int ROW = 8;
     protected static final int COL = 8;
 
-    public abstract int[] run();
+    public abstract int[] run(Button[][] map);
 
     /**
      *
@@ -21,17 +20,17 @@ abstract class BotController {
      * C1 represents the maximum number of boxes that can be changed by the maximizer,
      * and C2 represents the maximum number of boxes that can be changed by the minimizer
      *
-     * @param state ,current state of board games
      * @param turn ,-1 : minimizer, 1 : maximizer, 0 : base
      * @param map ,map on that current state
      * @return value of current stateAMO
      *
      */
-    protected int ObjectiveFunction(Button[][] state,int turn,Button[][] map) throws Exception{
+
+    protected int ObjectiveFunction(int turn,Button[][] map) throws Exception{
         if(turn == 1){
             return this.countSymbol(false,map)-this.countSymbol(true,map)-(2*calculateMaxChangeableBoxes(map,true))+1;
         }else if(turn == -1){
-            return this.countSymbol(false,map)-this.countSymbol(true,map)-(2*calculateMaxChangeableBoxes(map,false))+1;
+            return this.countSymbol(false,map)-this.countSymbol(true,map)+(2*calculateMaxChangeableBoxes(map,false))+1;
         }else if(turn == 0) {
             return this.countSymbol(false,map)-this.countSymbol(true,map);
         }else{
@@ -77,11 +76,10 @@ abstract class BotController {
      */
     protected int calculateMaxChangeableBoxes(Button[][] map,Boolean player){
         int MaxChangeable = 0;
-        int currentSymbol = countSymbol(player,map);
         for (int i = 0; i < ROW; i++){
             for (int j = 0; j < COL; j++) {
+                int adj = 0;
                 if (map[i][j].getText().equals("")){
-                    int adj = 0;
                     int startRow, endRow, startColumn, endColumn;
 
                     if (i - 1 < 0)     // If selected button in first row, no preceding row exists.
@@ -212,7 +210,7 @@ abstract class BotController {
         } else if (map[i][j].getText().equals("X")) {
             return currentSymbol+1;
         }
-        return -1;
+        return currentSymbol;
     }
 
     /**
@@ -228,6 +226,7 @@ abstract class BotController {
 
         for (int i = 0; i < ROW; i++){
             for (int j = 0; j < COL; j++) {
+                copiedMap[i][j] = new Button();
                 copiedMap[i][j].setText(map[i][j].getText());
             }
         }
