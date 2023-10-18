@@ -1,60 +1,82 @@
 import javafx.scene.control.Button;
 
 public class MinMax extends BotController{
-    private int MaxDepth = 5;
-    private int[] selected = new int[2]; //[x,y]
 
-    private Button[][] getUpdatedMap(Button[][] inputMap, int x, int y, String symbol) {
-        return inputMap;
+    private final int defaultMaxDepth = 5; // default maximum depth of child generating
+    private int MaxDepth; // leaf's depth
+    private int[] selected = new int[2]; // [x,y]
+
+    public MinMax(Button[][] map, boolean playerXTurn, int roundsLeft) {
+        this.currentState = map;
+        this.playerXTurn = playerXTurn;
+        this.roundsLeft = roundsLeft;
+        this.MaxDepth = Math.min(defaultMaxDepth, roundsLeft);
+        this.selected[0] = -1;
+        this.selected[1] = -1;
     }
 
     private double miniMaxAB(int depth, Button[][] map, double alpha, double beta){
         // leaf node
-        if(depth == MaxDepth){
+        if(depth == this.MaxDepth){
             try {
-                return ObjectiveFunction(-1, map);
+                //
+                if (this.roundsLeft == depth) {
+                    return ObjectiveFunction(0, map);
+                } else if (depth%2 == 1){
+                    // Minimum
+                    return ObjectiveFunction(-1, map);
+                }
+                // Maximum
+                return ObjectiveFunction(1, map);
             } catch (Exception e){
-                return 0.0;
+                System.out.println(e.getMessage());
             }
         }
 
         // Odd depth (Minimum condition) (player turn)
         if(depth % 2 == 1){
-//            double minEval = Double.NEGATIVE_INFINITY;
+            // Generating its children
+            outerloop:
             for (int i=0; i<map.length; i++){
                 for (int j=0; j<map[i].length; j++){
-                    // update map
-                    map = getUpdatedMap(map, i, j, "X");
+                    if (map[i][j].getText().isEmpty()) {
+                        // update map
+                        Button[][] childMap = getUpdatedState(map, i, j, true);
+                        double eval = miniMaxAB(depth + 1, childMap, alpha, beta);
+                        beta = Math.min(beta, eval);
 
-                    double eval = miniMaxAB(depth+1, map, alpha, beta);
-//                    minEval = Math.min(minEval, eval);
-                    beta = Math.min(beta, eval);
-                    if(beta <= alpha){
-                        break;
+                        // pruning
+                        if (beta <= alpha) {
+                            break outerloop;
+                        }
                     }
                 }
             }
-//            return minEval;
             return beta;
 
         // Even depth (Maximum condition) (bot turn)
         } else{
-//            double maxEval = Double.POSITIVE_INFINITY;
+            // Generating its children
+            outerloop:
             for (int i=0; i<map.length; i++){
                 for (int j=0; j<map[i].length; j++){
-                    // update map
-                    map = getUpdatedMap(map, i, j, "O");
-                    double eval = miniMaxAB(depth+1, map, alpha, beta);
-                    if (eval > alpha) {
-                        alpha = eval;
-                        // its always
-                        if (depth==0){
-                            selected[0] = i;
-                            selected[1] = j;
+                    if (map[i][j].getText().isEmpty()) {
+                        // update map
+                        Button[][] childMap = getUpdatedState(map, i, j, false);
+                        double eval = miniMaxAB(depth + 1, childMap, alpha, beta);
+                        if (eval > alpha) {
+                            alpha = eval;
+                            // its always
+                            if (depth == 0) {
+                                this.selected[0] = i;
+                                this.selected[1] = j;
+                            }
                         }
-                    }
-                    if(beta <= alpha){
-                        break;
+
+                        // pruning
+                        if (beta <= alpha) {
+                            break outerloop;
+                        }
                     }
                 }
             }

@@ -4,7 +4,6 @@ public class LocalSearch extends BotController{
         this.currentState = map;
         this.playerXTurn = playerXTurn;
         this.roundsLeft = roundsLeft;
-
     }
 
     private int[] hillClimb() {
