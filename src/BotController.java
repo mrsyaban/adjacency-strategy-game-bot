@@ -1,7 +1,7 @@
 import javafx.scene.control.Button;
 
 /**
- * Parent Classes to run a bot according to the MinMax Alpha Beta Pruning, Local Search, and Genetic algorithms
+ * Parent Class to run a bot according to the MinMax Alpha Beta Pruning, Local Search, and Genetic algorithms
  */
 abstract class BotController {
     protected Button[][] currentState;
@@ -10,6 +10,12 @@ abstract class BotController {
     protected static final int ROW = 8;
     protected static final int COL = 8;
 
+
+    /**
+     *
+     * produce next move position for bot based on algorithm that it uses
+     * @return next move position
+     */
     public abstract int[] run();
 
 
@@ -25,7 +31,7 @@ abstract class BotController {
      * C1 represents the maximum number of boxes that can be changed by the maximizer,
      * and C2 represents the maximum number of boxes that can be changed by the minimizer
      *
-     * @param turn ,-1 : minimizer, 1 : maximizer, 0 : base
+     * @param turn ,-1 : minimizer (player), 1 : maximizer (bot), 0 : base
      * @param map ,map on that current state
      * @return value of current stateAMO
      *
@@ -73,6 +79,7 @@ abstract class BotController {
     /**
      *
      * return the maximum number of boxes that can be changed by player or bot
+     * if player == true then it will return maximum number of bot that can change player symbol
      *
      * @param map, map on that state
      * @param player ,player: true, bot: false
@@ -83,7 +90,7 @@ abstract class BotController {
         int MaxChangeable = 0;
         for (int i = 0; i < ROW; i++){
             for (int j = 0; j < COL; j++) {
-                int adj = 0;
+                int adj = 0; // adjacent from that position
                 if (map[i][j].getText().equals("")){
                     int startRow, endRow, startColumn, endColumn;
 
@@ -153,25 +160,12 @@ abstract class BotController {
 
             int startRow, endRow, startColumn, endColumn;
 
-            if (i - 1 < 0)     // If selected button in first row, no preceding row exists.
-                startRow = i;
-            else               // Otherwise, the preceding row exists for adjacency.
-                startRow = i - 1;
+            // Similar boundary checks as in the original function
+            startRow = (i - 1 < 0) ? i : i - 1;
+            endRow = (i + 1 >= ROW) ? i : i + 1;
+            startColumn = (j - 1 < 0) ? j : j - 1;
+            endColumn = (j + 1 >= COL) ? j : j + 1;
 
-            if (i + 1 >= ROW)  // If selected button in last row, no subsequent/further row exists.
-                endRow = i;
-            else               // Otherwise, the subsequent row exists for adjacency.
-                endRow = i + 1;
-
-            if (j - 1 < 0)     // If selected on first column, lower bound of the column has been reached.
-                startColumn = j;
-            else
-                startColumn = j - 1;
-
-            if (j + 1 >= COL)  // If selected on last column, upper bound of the column has been reached.
-                endColumn = j;
-            else
-                endColumn = j + 1;
 
 
             // Search for adjacency for X's and O's or vice versa, and replace them.
@@ -186,50 +180,23 @@ abstract class BotController {
 
 
     }
-
+    /**
+     *
+     * return updated adjaceny value on currentSymbol in that state after selected value in i,j
+     *
+     * @param i ,coordinate of y-axis on selected button on map
+     * @param j ,coordinate of y-axis on selected button on map
+     * @param player ,player: true and bot: false
+     * @param currentState, map in that current state
+     *
+     */
     public Button[][] getUpdatedState(Button[][] currentState, int i, int j, Boolean player) {
         Button[][] newState = copy(currentState); // Create a deep copy of the currentState
 
-        if (newState[i][j].getText().equals("")) { // if selected value is still empty
-            if (player) { // if player update with X
-                newState[i][j].setText("X");
-            } else { // Otherwise, it's the bot. Update with O.
-                newState[i][j].setText("O");
-            }
-
-
-            int startRow, endRow, startColumn, endColumn;
-
-            // Similar boundary checks as in the original function
-            startRow = (i - 1 < 0) ? i : i - 1;
-            endRow = (i + 1 >= ROW) ? i : i + 1;
-            startColumn = (j - 1 < 0) ? j : j - 1;
-            endColumn = (j + 1 >= COL) ? j : j + 1;
-
-            for (int x = startRow; x <= endRow; x++) {
-                newState = setAdjacencyState(newState, x, j, player);
-            }
-
-            for (int y = startColumn; y <= endColumn; y++) {
-                newState = setAdjacencyState(newState, i, y, player);
-            }
-        }
+        this.updateState(i,j,player,newState);
 
         return newState;
     }
-
-    private Button[][] setAdjacencyState(Button[][] state, int i, int j,Boolean player){
-        if (player) {
-            if (state[i][j].getText().equals("O")) {
-                state[i][j].setText("X");
-            }
-        } else if (state[i][j].getText().equals("X")) {
-            state[i][j].setText("O");
-        }
-        return state;
-    }
-
-
 
     /**
      *
