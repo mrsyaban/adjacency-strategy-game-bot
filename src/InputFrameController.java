@@ -2,12 +2,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,6 +20,7 @@ import java.io.IOException;
 public class InputFrameController{
 
     public CheckBox isBotFirst;
+    public Label playerlabel;
     @FXML
     private TextField player1;
 
@@ -31,6 +29,15 @@ public class InputFrameController{
 
     @FXML
     private ComboBox<String> numberOfRounds;
+
+    @FXML
+    private ComboBox<String> gameMode;
+
+    @FXML
+    private ComboBox<String> bot1algo;
+
+    @FXML
+    private ComboBox<String> bot2algo;
 
 
     /**
@@ -45,6 +52,29 @@ public class InputFrameController{
                 "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28");
         this.numberOfRounds.setItems(numberOfRoundsDropdown);
         this.numberOfRounds.getSelectionModel().select(0);
+
+        ObservableList<String> mode = FXCollections.observableArrayList("player vs bot","bot vs bot");
+        this.gameMode.setItems(mode);
+        this.gameMode.getSelectionModel().select(0);
+
+        ObservableList<String> algo = FXCollections.observableArrayList("MinMax","localSearch","Genetic");
+        this.bot1algo.setItems(algo);
+        this.bot1algo.getSelectionModel().select(0);
+
+        this.bot2algo.setItems(algo);
+        this.bot2algo.getSelectionModel().select(0);
+
+        this.bot1algo.setDisable(true);
+
+        this.gameMode.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if ("player vs bot".equals(newValue)) {
+                this.bot1algo.setDisable(true);
+                this.playerlabel.setText("Player Name (X): ");
+            } else {
+                this.bot1algo.setDisable(false);
+                this.playerlabel.setText("Bot Name (X): ");
+            }
+        });
     }
 
 
@@ -80,7 +110,7 @@ public class InputFrameController{
 
             // Get controller of output frame and pass input including player names and number of rounds chosen.
             OutputFrameController outputFC = loader.getController();
-            outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected());
+            outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected(),this.gameMode.getValue(),this.bot1algo.getValue(),this.bot2algo.getValue());
 
             // Open the new frame.
             Stage secondaryStage = new Stage();
