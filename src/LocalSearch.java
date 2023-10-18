@@ -1,7 +1,4 @@
 import javafx.scene.control.Button;
-
-import java.util.Arrays;
-
 public class LocalSearch extends BotController{
     public LocalSearch(Button[][] map, boolean playerXTurn, int roundsLeft) {
         this.currentState = map;
@@ -22,7 +19,7 @@ public class LocalSearch extends BotController{
                     Button[][] child = getUpdatedState(state, i, j, false);
 //                    System.out.println(Arrays.deepToString(child));
                     try {
-                        int score = ObjectiveFunction(child, this.roundsLeft == 1 ? 0 : -1);
+                        int score = ObjectiveFunction(this.roundsLeft == 1 ? 0 : -1, child);
 //                        System.out.println(score);
                         if (score > maxScore) {
                             maxScore = score;
@@ -45,4 +42,5 @@ public class LocalSearch extends BotController{
         int[] bestMove = hillClimb();
         return new int[]{bestMove[0], bestMove[1]};
     }
+
 }
