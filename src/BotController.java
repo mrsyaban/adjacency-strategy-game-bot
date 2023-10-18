@@ -46,6 +46,7 @@ abstract class BotController {
      * Return sum of symbol player
      *
      * @param player ,player: true, bot: false
+     * @param map, map in that current state
      * @return sum of symbol player or bot
      *
      */
@@ -132,6 +133,7 @@ abstract class BotController {
      * @param i ,coordinate of y-axis on selected button on map
      * @param j ,coordinate of x-axis on selected button on map
      * @param player ,player: true, bot: false
+     * @param map, map in that current state
      *
      */
     protected void updateState(int i, int j,Boolean player,Button[][] map){
@@ -191,6 +193,8 @@ abstract class BotController {
      * @param i ,coordinate of y-axis on selected button on map
      * @param j ,coordinate of y-axis on selected button on map
      * @param player ,player: true and bot: false
+     * @param map, map in that current state
+     *
      */
     private void setAdjacency(int i, int j,Boolean player,Button[][] map){
         if (player) {
