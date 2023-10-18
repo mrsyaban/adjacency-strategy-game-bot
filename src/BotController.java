@@ -10,8 +10,6 @@ abstract class BotController {
 
     public abstract int[] run();
 
-
-
     /**
      *
      * Return value of current state based on objective function
@@ -215,6 +213,26 @@ abstract class BotController {
             return currentSymbol+1;
         }
         return -1;
+    }
+
+    /**
+     * create new object and copy current map to that object
+     *
+     * @param map , map on that curren state
+     * @return copied map
+     *
+     */
+
+    protected Button[][] copy(Button[][] map){
+        Button[][] copiedMap = new Button[ROW][COL];
+
+        for (int i = 0; i < ROW; i++){
+            for (int j = 0; j < COL; j++) {
+                copiedMap[i][j].setText(map[i][j].getText());
+            }
+        }
+
+        return copiedMap;
     }
 
 }
