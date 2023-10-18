@@ -10,19 +10,26 @@ public class LocalSearch extends BotController{
         this.roundsLeft = roundsLeft;
     }
 
+    // The hillClimb method evaluates all possible moves and returns the coordinates of the best move.
     private int[] hillClimb() {
+        // Initialize variables to keep track of the highest score and corresponding move.
         int maxScore = Integer.MIN_VALUE;
         int bestI=-1, bestJ=-1;
         Button[][] state = this.currentState;
 
 
+        // Loop through the current game state to evaluate all potential moves.
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
+                // Check if the current cell is empty, indicating a potential move.
                 if (state[i][j].getText().equals("")) {
+                    // Generate a new game state after making a move at the current cell.
                     Button[][] child = getUpdatedState(state, i, j, false);
-//                    System.out.println(Arrays.deepToString(child));
+
+                    // Evaluate the new game state using the ObjectiveFunction.
                     int score = ObjectiveFunction(this.roundsLeft == 1 ? 0 : 1, child);
-//                        System.out.println(score);
+
+                    // If the score is higher than the current maxScore, update maxScore and move coordinates.
                     if (score > maxScore) {
                         maxScore = score;
                         bestI = i;
@@ -32,12 +39,14 @@ public class LocalSearch extends BotController{
             }
         }
 
+        // Return the best move's coordinates.
         return new int[]{bestI, bestJ};
     }
 
     @Override
     public int[] run() {
         int[] bestMove = hillClimb();
+        this.roundsLeft--;
         return new int[]{bestMove[0], bestMove[1]};
     }
 
