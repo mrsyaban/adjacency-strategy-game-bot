@@ -209,6 +209,7 @@ abstract class BotController {
         } else if (this.currentState[i][j].getText().equals("X")) {
             return currentSymbol+1;
         }
+        return -1;
     }
 
 }
