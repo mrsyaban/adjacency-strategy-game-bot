@@ -57,7 +57,7 @@ public class InputFrameController{
         this.gameMode.setItems(mode);
         this.gameMode.getSelectionModel().select(0);
 
-        ObservableList<String> algo = FXCollections.observableArrayList("MinMax","localSearch","Genetic");
+        ObservableList<String> algo = FXCollections.observableArrayList("MinMax","LocalSearch","Genetic");
         this.bot1algo.setItems(algo);
         this.bot1algo.getSelectionModel().select(0);
 

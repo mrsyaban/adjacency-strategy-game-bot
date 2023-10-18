@@ -17,6 +17,13 @@ public class Genetic extends BotController{
         return new int[]{bestmove[0], bestmove[1]};
     }
 
+    /**
+     *
+     * perform return next move with genetic algorithm
+     *
+     * @param map ,map on that round
+     * @return
+     */
     public int[] geneticMove(Button[][] map) {
         int populationSize = 28;
         int maxGenerations = 50;
@@ -102,6 +109,13 @@ public class Genetic extends BotController{
         return null;
     }
 
+    /**
+     * return evaluated value on that possible coordinate in current map
+     *
+     * @param individual ,coordinate that possible on parent
+     * @param map ,current map on that round
+     * @return
+     */
     private int evaluateFitness(List<int[]> individual, Button[][] map) {
         Button[][] tempBoard = copy(map);
 
@@ -133,10 +147,24 @@ public class Genetic extends BotController{
         return xCount;
     }
 
+    /**
+     * Procedure for crossover children
+     *
+     * @param parent1 ,coordinate that possible after evaluated
+     * @param parent2 ,coordinate that possible after evaluated
+     * @return
+     */
     public int[] crossover(int[] parent1, int[] parent2) {
         return new int[] {parent1[0], parent2[1]};
     }
 
+    /**
+     *
+     * mutate children
+     *
+     * @param individual ,coordinate that possible
+     * @return
+     */
     public List<int[]> mutate(List<int[]> individual) {
         Random random = new Random();
         int mutationPoint = random.nextInt(individual.size());
@@ -146,8 +174,14 @@ public class Genetic extends BotController{
         individual.get(mutationPoint)[1] = mutationY;
         return individual;
     }
-    
 
+    /**
+     * get random sample from population
+     *
+     * @param populationSize ,number of coordinate that possible
+     * @param sampleSize ,number of coordinate that possible get from population
+     * @return
+     */
     public List<Integer> getRandomSample(int populationSize, int sampleSize) {
         List<Integer> population = new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {

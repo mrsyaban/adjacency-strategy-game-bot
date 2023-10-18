@@ -21,17 +21,12 @@ public class LocalSearch extends BotController{
                 if (state[i][j].getText().equals("")) {
                     Button[][] child = getUpdatedState(state, i, j, false);
 //                    System.out.println(Arrays.deepToString(child));
-                    try {
-                        int score = ObjectiveFunction(this.roundsLeft == 1 ? 0 : 1, child);
+                    int score = ObjectiveFunction(this.roundsLeft == 1 ? 0 : 1, child);
 //                        System.out.println(score);
-                        if (score > maxScore) {
-                            maxScore = score;
-                            bestI = i;
-                            bestJ = j;
-                        }
-                    }
-                    catch (Exception e) {
-                        System.out.println(e.getMessage());
+                    if (score > maxScore) {
+                        maxScore = score;
+                        bestI = i;
+                        bestJ = j;
                     }
                 }
             }

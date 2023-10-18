@@ -24,8 +24,8 @@ abstract class BotController {
      *
      * Setting attribute symbol
      *
-     * @param enemy
-     * @param our
+     * @param enemy ,enemy symbol
+     * @param our   ,our symbol
      */
     public void setSymbol(String enemy, String our){
         this.ourSymbol = our;
@@ -50,16 +50,15 @@ abstract class BotController {
      *
      */
 
-    protected int ObjectiveFunction(int turn,Button[][] map) throws Exception{
+    protected int ObjectiveFunction(int turn,Button[][] map) {
         if(turn == 1){
             return this.countSymbol(false,map)-this.countSymbol(true,map)-(2*calculateMaxChangeableBoxes(map,true))+1;
         }else if(turn == -1){
             return this.countSymbol(false,map)-this.countSymbol(true,map)+(2*calculateMaxChangeableBoxes(map,false))+1;
         }else if(turn == 0) {
             return this.countSymbol(false,map)-this.countSymbol(true,map);
-        }else{
-            throw new Exception("Invalid Input");
         }
+        return Integer.MIN_VALUE;
     }
 
     /**
@@ -193,7 +192,7 @@ abstract class BotController {
     }
     /**
      *
-     * return updated adjaceny value on currentSymbol in that state after selected value in i,j
+     * return updated adjacency value on currentSymbol in that state after selected value in i,j
      *
      * @param i ,coordinate of y-axis on selected button on map
      * @param j ,coordinate of y-axis on selected button on map
@@ -211,7 +210,7 @@ abstract class BotController {
 
     /**
      *
-     * update adjaceny value on map or currentSymbol in that state
+     * update adjacency value on map or currentSymbol in that state
      *
      * @param i ,coordinate of y-axis on selected button on map
      * @param j ,coordinate of y-axis on selected button on map
