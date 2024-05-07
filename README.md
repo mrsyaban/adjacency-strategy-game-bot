@@ -3,6 +3,7 @@
   <img src="https://github.com/ahnjedid/Adjacency-Strategy-Game/blob/master/screenshots/gamePlay.png">
 </kbd>
 
+> This projects built to fulfill Tubes IF3170 Intelejensi Buatan
 <hr>
 
 ### Introduction
